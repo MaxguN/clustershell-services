@@ -1,5 +1,8 @@
 *.py[cod]
 
+# Xen disk images
+test/xen/disks/*/*/*.img
+
 # C extensions
 *.so
 
