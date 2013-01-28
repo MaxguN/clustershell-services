@@ -42,7 +42,6 @@ Change toolstack to `xl`, `xm` is deprecated in 4.2. In `/etc/default/xen` :
 
 Configure bridge interface in `/etc/network/interfaces` :
 
-	auto xenbr0
 	iface xenbr0 inet static
 		address 172.16.10.1
 		netmask 255.255.255.0
@@ -51,17 +50,36 @@ Configure bridge interface in `/etc/network/interfaces` :
 
 When booting, choose xen kernel. Reboot on xen kernel for next part.
 
+To enable bridge after boot :
+
+	brctl addbr xenbr0
+	ifup xenbr0
+
 
 Installing DomUs
 ----------------
 
-Create the VM :
+Create the first VM :
 
-	xen-create-image --config=`pwd`/test/xen/node<X>.conf
+	xen-create-image --config=`pwd`/node<X>.conf
 
-Run the VM :
+Create subsequent VMs faster :
+
+	mkdir -p /media/iso
+	mount disks/domains/node1/disk.img /media/iso
+	xen-create-image --config=`pwd`/node<X>.conf --install-source=/media/iso
+
+Or run install script (it will install all 8 DomUs, erasing any existing one) :
+
+	sh build-domus.sh
+
+Run a VM :
 
 	xl create /etc/xen/node<X>.cfg
+
+Run all VMs :
+
+	sh start-domus.sh
 
 Connect via SSH :
 
@@ -74,3 +92,13 @@ or console :
 Shutdown when finished :
 
 	xl shutdown node<X>
+
+Or shutdown all VMs :
+
+	sh stop-domus.sh
+
+
+Configuring DomUs
+-----------------
+
+TODO
