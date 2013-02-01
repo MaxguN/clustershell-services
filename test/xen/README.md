@@ -48,6 +48,10 @@ Configure bridge interface in `/etc/network/interfaces` :
 		network 172.16.10.0
 		broadcast 172.16.10.255
 
+Install dnsmasq for VMs to get DNS :
+
+	aptitude install dnsmasq
+
 When booting, choose xen kernel. Reboot on xen kernel for next part.
 
 To enable bridge after boot :
@@ -102,3 +106,28 @@ Configuring DomUs
 -----------------
 
 TODO
+
+Services
+--------
+
+DHCP (2)	isc-dhcp-server
+	node1
+	node2
+
+DNS (2)		bind9
+	node3
+	node4
+
+NTP (4)		ntp
+	node5
+	node6
+	node7
+	node8
+
+FTP (6)		proftpd
+	node1
+	node2
+	node4
+	node5
+	node7
+	node8
