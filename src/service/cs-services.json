@@ -2,7 +2,7 @@
 	"services" : {
 		"ftp" : {
 			"daemon" : "proftpd",
-			"dependencies" : [],
+			"dependencies" : ["ntp"],
 			"nodes" : [
 				"node1",
 				"node2",
@@ -10,7 +10,8 @@
 				"node5",
 				"node7",
 				"node8"
-			]
+			],
+			"actions" : ["start", "status", "force-start", "stop", "force-stop", "reload", "restart", "force-reload", "check-config"]
 		},
 		"dhcp" : {
 			"daemon" : "isc-dhcp-server",
@@ -18,7 +19,8 @@
 			"nodes" : [
 				"node1",
 				"node2"
-			]
+			],
+			"actions" : ["start", "status", "stop", "reload", "restart", "force-reload"]
 		},
 		"dns" : {
 			"daemon" : "bind9",
@@ -26,7 +28,8 @@
 			"nodes" : [
 				"node3",
 				"node4"
-			]
+			],
+			"actions" : ["start", "status", "stop", "reload", "restart", "force-reload"]
 		},
 		"ntp" : {
 			"daemon" : "ntp",
@@ -36,10 +39,12 @@
 				"node6",
 				"node7",
 				"node8"
-			]
+			],
+			"actions" : ["start", "status", "stop", "restart", "force-reload", "try-restart"]
 		}
 	},
 	"groups" : {
-		"addressing" : ["dhcp", "dns"]
+		"addressing" : ["dhcp", "dns"],
+		"all" : ["ftp", "addressing"]
 	}
 }

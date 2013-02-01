@@ -9,7 +9,7 @@ nodes = {}
 
 if len(sys.argv) == 4 :
 	action = sys.argv[2]
-	nodes = {sys.argv[1] : sys.argv[3]}
+	nodes = [(sys.argv[1], sys.argv[1], sys.argv[3])]
 elif len(sys.argv) == 3 :
 	config.load()
 
@@ -17,7 +17,7 @@ elif len(sys.argv) == 3 :
 	nodes = config.fetchNodes(sys.argv[1])
 	
 	if len(nodes) == 0 :
-		print 'Service ' + service + ' not found'
+		print 'Service ' + sys.argv[1] + ' not found'
 		exit(2)
 
 else :
@@ -26,10 +26,12 @@ else :
 
 task = task_self()
 
-for service in nodes:
-	task.run('service ' + service + ' ' + action, nodes=nodes[service])
+for service, daemon, node in nodes:
+	if config.checkAction(service, action) :
+		task.run('service ' + daemon + ' ' + action, nodes=node)
 
-	for output, nodeset in task.iter_buffers():
-		# for node in nodeset:
-		# 	print node, output
-		print NodeSet.fromlist(nodeset), output
+		for output, nodeset in task.iter_buffers():
+			print NodeSet.fromlist(nodeset), output
+	else :
+		print 'Action "' + action + '" is not supported by ' + service
+		print 'Actions supported : ' + config.listActions(service)
