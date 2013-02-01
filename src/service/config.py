@@ -1,19 +1,20 @@
 import json
+from ClusterShell.Task import NodeSet
 
 config = {}
 
 def fetchNodes(service):
 	global config
 
+	nodes = {}
+
 	if config['services'].has_key(service) :
-		return config['services'][service]['nodes']
+		nodes[config['services'][service]['daemon']] = NodeSet.fromlist(map(unicode.encode, config['services'][service]['nodes']))
 	elif config['groups'].has_key(service) :
-		nodes = []
 		for subservice in config['groups'][service]:
-			nodes = nodes + config['services'][subservice]['nodes']
-		return nodes
-	else :
-		return []
+			nodes[config['services'][subservice]['daemon']] = NodeSet.fromlist(map(unicode.encode, config['services'][subservice]['nodes']))
+
+	return nodes
 
 def load(filename = 'cs-services.json'):
 	global config
