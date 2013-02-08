@@ -9,7 +9,7 @@ nodes = {}
 
 if len(sys.argv) == 4 :
 	action = sys.argv[2]
-	nodes = [(sys.argv[1], sys.argv[1], sys.argv[3])]
+	nodes = [(sys.argv[1], 'service ', sys.argv[1], sys.argv[3])]
 elif len(sys.argv) == 3 :
 	config.load()
 
@@ -26,9 +26,9 @@ else :
 
 task = task_self()
 
-for service, daemon, node in nodes:
+for service, manager, daemon, node in nodes:
 	if config.checkAction(service, action) :
-		task.run('service ' + daemon + ' ' + action, nodes=node)
+		task.run(manager + daemon + ' ' + action, nodes=node)
 
 		for output, nodeset in task.iter_buffers():
 			print NodeSet.fromlist(nodeset), output
