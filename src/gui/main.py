@@ -29,6 +29,8 @@ class Application :
 
         nodes['command'] = self.switchtonodes
         groups['command'] = self.switchtogroups
+        managers['command'] = self.switchtomanagers
+        services['command'] = self.switchtoservices
 
         self.frames['services'] = ServicesFrame(self.window)
         self.frames['servicesedit'] = ServiceseditFrame(self.window)
@@ -50,8 +52,23 @@ class Application :
             self.buttons[self.current]['relief'] = RAISED
         self.current = 'groups'
         self.buttons[self.current]['relief'] = SUNKEN
+        self.frames[self.current].attach
+
+    def switchtomanagers(self) :
+        if self.current :
+            self.frames[self.current].detach()
+            self.buttons[self.current]['relief'] = RAISED
+        self.current = 'managers'
+        self.buttons[self.current]['relief'] = SUNKEN
         self.frames[self.current].attach()
 
+    def switchtoservices(self) :
+        if self.current :
+            self.frames[self.current].detach()
+            self.buttons[self.current]['relief'] = RAISED
+        self.current = 'services'
+        self.buttons[self.current]['relief'] = SUNKEN
+        self.frames[self.current].attach()
 
     def start(self) :
         self.switchtogroups()
