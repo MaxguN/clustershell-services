@@ -21,7 +21,8 @@ class Application :
         self.buttons['nodes'] = nodes = Button(self.window, text="Nodes")
         self.buttons['groups'] = groups = Button(self.window, text="Groups")
         self.buttons['managers'] = managers = Button(self.window, text="Managers")
-
+        self.buttons['servicesedit'] = services
+        
         services.grid(row=0, column=0)
         nodes.grid(row=0, column=1)
         groups.grid(row=0, column=2)
@@ -52,7 +53,7 @@ class Application :
             self.buttons[self.current]['relief'] = RAISED
         self.current = 'groups'
         self.buttons[self.current]['relief'] = SUNKEN
-        self.frames[self.current].attach
+        self.frames[self.current].attach()  
 
     def switchtomanagers(self) :
         if self.current :
@@ -70,8 +71,16 @@ class Application :
         self.buttons[self.current]['relief'] = SUNKEN
         self.frames[self.current].attach()
 
+    def switchtoservicesedit(self) :
+        if self.current :
+            self.frames[self.current].detach()
+            self.buttons[self.current]['relief'] = RAISED
+        self.current = 'servicesedit'
+        self.buttons[self.current]['relief'] = SUNKEN
+        self.frames[self.current].attach()
+
     def start(self) :
-        self.switchtogroups()
+        self.switchtoservices()
         self.window.mainloop()
 
 
