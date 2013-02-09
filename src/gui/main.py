@@ -4,9 +4,9 @@ from Tkinter import *
 
 class Application:
     def __init__(self) :
+        self.current = ""
         self.buttons = {}
-        self.groupelements = {}
-        self.nodeselements = {}
+        self.frames = {}
         self.main()
 
     def main(self) :
@@ -22,15 +22,29 @@ class Application:
         groups.grid(row=0, column=2)
         managers.grid(row=0, column=3)
 
+        nodes['command'] = self.switchtonodes
+        groups['command'] = self.switchtogroups
+
+    def switchtonodes(self) :
+        self.frames[self.current]['frame'].grid_forget()
+        self.nodes()
+
+    def switchtogroups(self) :
+        self.frames[self.current]['frame'].grid_forget()
+        self.groups()
+
     def groups(self) :
         for button in self.buttons :
             self.buttons[button]['relief'] = RAISED
         self.buttons['groups']['relief'] = SUNKEN
+        self.current = "groups"
 
-        self.groupelements['frame'] = frame = Frame(self.window, width=768, height=576, borderwidth=1)
-        self.groupelements['groups'] = grouplist = Listbox(frame)
-        self.groupelements['name'] = nameinput = Entry(frame)
-        self.groupelements['services'] = serviceslist = Listbox(frame)
+        self.frames['groups'] = {}
+
+        self.frames['groups']['frame'] = frame = Frame(self.window, width=768, height=576, borderwidth=1)
+        self.frames['groups']['groups'] = grouplist = Listbox(frame)
+        self.frames['groups']['name'] = nameinput = Entry(frame)
+        self.frames['groups']['services'] = serviceslist = Listbox(frame)
         namelabel = Label(frame, text="Name :")
         serviceslabel = Label(frame, text="Services :")
         groupslabel = Label(frame, text="Groups :")
@@ -58,14 +72,20 @@ class Application:
         for button in self.buttons :
             self.buttons[button]['relief'] = RAISED
         self.buttons['nodes']['relief'] = SUNKEN
+        self.current = "nodes"
 
-        self.nodeselements['frame'] = frame = Frame(self.window, width=768, height=576, borderwidth=1)
-        self.nodeselements['nodes'] = nodeslist = Listbox(frame)
-        self.nodeselements['name'] = nameinput = Entry(frame)
-        self.nodeselements['managers'] = managerslist = BrowseEntry(self.window)
+        self.frames['nodes'] = {}
+
+        managers = ["service", "sysvinit", "bsdinit", "upstart", "systemd"]
+        self.frames['nodes']['manager'] = manager = StringVar()
+        manager.set(managers[0])
+
+        self.frames['nodes']['frame'] = frame = Frame(self.window, width=768, height=576, borderwidth=1)
+        self.frames['nodes']['nodes'] = nodeslist = Listbox(frame)
+        self.frames['nodes']['name'] = nameinput = Entry(frame)
+        managerslist = OptionMenu(frame, manager, *managers)
         namelabel = Label(frame, text="Name :")
-        managerslabel = Label(frame, text="Managers :")
-        
+        managerslabel = Label(frame, text="Managers :") 
         nodeadd = Button(self.window, text="+")
         nodedel = Button(self.window, text="-")
 
@@ -73,15 +93,13 @@ class Application:
         nodeslist.grid(row=0, rowspan=4)
         namelabel.grid(row=0, column=1, sticky=W)
         nameinput.grid(row=0, column=2)
-        managerslabel.grid(row=1, column=1, columnspan=2, sticky=W)
-        managerslist.grid(row=2, column=1, rowspan=2, columnspan=2)
-
+        managerslabel.grid(row=1, column=1, sticky=W)
+        managerslist.grid(row=1, column=2, sticky=W)
         nodeadd.grid(row=2, column=0, sticky=W)
         nodedel.grid(row=2, column=0)
         
 
     def start(self) :
-        # self.groups()
         self.nodes()
         self.window.mainloop()
 
