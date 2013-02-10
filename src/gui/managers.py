@@ -9,7 +9,7 @@ class ManagersFrame :
 		self.command = commandsinput = Entry(frame)
 
 		namelabel = Label(frame, text="Name :")
-		commandslabel = Label(frame, text="Command :") 
+		commandslabel = Label(frame, text="Command :")
 		manageradd = Button(frame, text="+")
 		managerdel = Button(frame, text="-")
 

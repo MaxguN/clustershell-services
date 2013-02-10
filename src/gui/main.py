@@ -33,8 +33,8 @@ class Application :
         managers['command'] = self.switchtomanagers
         services['command'] = self.switchtoservices
 
-        self.frames['services'] = ServicesFrame(self.window)
-        self.frames['servicesedit'] = ServiceseditFrame(self.window)
+        self.frames['services'] = ServicesFrame(self.window, self)
+        self.frames['servicesedit'] = ServiceseditFrame(self.window, self)
         self.frames['nodes'] = NodesFrame(self.window)
         self.frames['groups'] = GroupsFrame(self.window)
         self.frames['managers'] = ManagersFrame(self.window)

@@ -1,8 +1,7 @@
 from Tkinter import *
 
-
 class ServicesFrame :
-	def __init__(self, goshujinsama) :
+	def __init__(self, goshujinsama, application) :
 		self.frame = frame = Frame(goshujinsama)
 
 		self.services = serviceslist = Listbox(frame, height=10, width=15)
@@ -23,6 +22,8 @@ class ServicesFrame :
 		stopbutton.grid(row=4, column=2, sticky=W)
 		restartbutton.grid(row=4, column=3, sticky=W)
 		statusbutton.grid(row=4, column=4, sticky=W)
+
+		editbutton['command'] = application.switchtoservicesedit
 
 	def attach(self) :
 		self.frame.grid(row=1, column=0, columnspan=4)
