@@ -53,3 +53,11 @@ def load(filename = 'cs-services.json') :
 	config = json.load(configfd)
 
 	configfd.close()
+
+def save(filename = 'cs-services.json') :
+	global config
+	configfd = open(filename, 'w')
+
+	json.dump(config, configfd)
+
+	configfd.close()

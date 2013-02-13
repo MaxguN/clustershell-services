@@ -1,7 +1,8 @@
 from Tkinter import *
 
 class NodesFrame :
-	def __init__(self, goshujinsama) :
+	def __init__(self, goshujinsama, application) :
+		self.application = application
 		managers = ["service", "sysvinit", "bsdinit", "upstart", "systemd"]
 		self.manager = manager = StringVar()
 		manager.set(managers[0])

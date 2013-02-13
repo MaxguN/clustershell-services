@@ -7,9 +7,16 @@ from nodes import *
 from services import *
 from servicesedit import *
 
+import sys
+sys.path.append('../service')
+
+import config
+
 class Application :
     def __init__(self) :
         self.current = ''
+        config.load()
+        self.config = config.config
         self.buttons = {}
         self.frames = {}
         self.main()
@@ -35,9 +42,9 @@ class Application :
 
         self.frames['services'] = ServicesFrame(self.window, self)
         self.frames['servicesedit'] = ServiceseditFrame(self.window, self)
-        self.frames['nodes'] = NodesFrame(self.window)
-        self.frames['groups'] = GroupsFrame(self.window)
-        self.frames['managers'] = ManagersFrame(self.window)
+        self.frames['nodes'] = NodesFrame(self.window, self)
+        self.frames['groups'] = GroupsFrame(self.window, self)
+        self.frames['managers'] = ManagersFrame(self.window, self)
 
     def switchtonodes(self) :
         if self.current :

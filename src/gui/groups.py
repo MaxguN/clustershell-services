@@ -1,7 +1,8 @@
 from Tkinter import *
 
 class GroupsFrame :
-	def __init__(self, goshujinsama) :
+	def __init__(self, goshujinsama, application) :
+		self.application = application
 		self.frame = frame = Frame(goshujinsama)
 		self.groups = grouplist = Listbox(frame, height=10, width=15)
 		self.name = nameinput = Entry(frame)

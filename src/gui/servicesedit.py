@@ -2,6 +2,7 @@ from Tkinter import *
 
 class ServiceseditFrame :
 	def __init__(self, goshujinsama, application) :
+		self.application = application
 		self.frame = frame = Frame(goshujinsama)
 
 		self.services = serviceslist = Listbox(frame, height=10, width=15)
