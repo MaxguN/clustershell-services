@@ -2,6 +2,7 @@
 
 from Tkinter import *
 from groups import *
+from groupsedit import *
 from managers import *
 from nodes import *
 from services import *
@@ -25,10 +26,11 @@ class Application :
         self.window = Tk()
 
         self.buttons['services'] = services = Button(self.window, text="Services")
+        self.buttons['servicesedit'] = services
         self.buttons['nodes'] = nodes = Button(self.window, text="Nodes")
         self.buttons['groups'] = groups = Button(self.window, text="Groups")
+        self.buttons['groupsedit'] = groups
         self.buttons['managers'] = managers = Button(self.window, text="Managers")
-        self.buttons['servicesedit'] = services
         
         services.grid(row=0, column=0)
         nodes.grid(row=0, column=1)
@@ -44,6 +46,7 @@ class Application :
         self.frames['servicesedit'] = ServiceseditFrame(self.window, self)
         self.frames['nodes'] = NodesFrame(self.window, self)
         self.frames['groups'] = GroupsFrame(self.window, self)
+        self.frames['groupsedit'] = GroupseditFrame(self.window, self)
         self.frames['managers'] = ManagersFrame(self.window, self)
 
     def switchtonodes(self) :
@@ -60,7 +63,15 @@ class Application :
             self.buttons[self.current]['relief'] = RAISED
         self.current = 'groups'
         self.buttons[self.current]['relief'] = SUNKEN
-        self.frames[self.current].attach()  
+        self.frames[self.current].attach()
+
+    def switchtogroupsedit(self) :
+        if self.current :
+            self.frames[self.current].detach()
+            self.buttons[self.current]['relief'] = RAISED
+        self.current = 'groupsedit'
+        self.buttons[self.current]['relief'] = SUNKEN
+        self.frames[self.current].attach()
 
     def switchtomanagers(self) :
         if self.current :

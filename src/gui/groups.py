@@ -4,30 +4,56 @@ class GroupsFrame :
 	def __init__(self, goshujinsama, application) :
 		self.application = application
 		self.frame = frame = Frame(goshujinsama)
-		self.groups = grouplist = Listbox(frame, height=10, width=15)
-		self.name = nameinput = Entry(frame)
-		self.services = serviceslist = Listbox(frame)
-		namelabel = Label(frame, text="Name :")
-		serviceslabel = Label(frame, text="Services :")
 
-		groupadd = Button(frame, text="+")
-		servicesadd = Button(frame, text="+")
-		groupdel = Button(frame, text="-")
-		servicesdel = Button(frame, text="-")
+		self.groups = groupslist = Listbox(frame, height=10, width=15)
+		self.nodes = nodeslist = Listbox(frame, selectmode=EXTENDED)
 
-		grouplist.grid(row=0, column=0, rowspan=4, sticky=N+S)
-		namelabel.grid(row=0, column=1, sticky=W)
-		nameinput.grid(row=0, column=2, sticky=W)
-		serviceslabel.grid(row=1, column=1, sticky=W)
-		serviceslist.grid(row=2, column=1, rowspan=2, columnspan=2, sticky=W)
+		nodelabel = Label(frame, text="Nodes :")
+		editbutton = Button(frame, text="Edit")
+		startbutton = Button(frame, text="Start")
+		stopbutton = Button(frame, text="Stop")
+		restartbutton = Button(frame, text="Restart")
+		statusbutton = Button(frame, text="Status")
 
-		groupadd.grid(row=4, column=0, sticky=W)
-		groupdel.grid(row=4, column=0, sticky=W, padx=37)
-		servicesadd.grid(row=4, column=1, sticky=W)
-		servicesdel.grid(row=4, column=1, sticky=W, padx=37)
+		groupslist.grid(row=0, column=0, rowspan=4, sticky=N+S)
+		nodelabel.grid(row=0, column=1, sticky=W)
+		nodeslist.grid(row=1, column=1, columnspan=4,sticky=W+N+S+E)
+		editbutton.grid(row=4, column=0, sticky=W+E)
+		startbutton.grid(row=4, column=1, sticky=W)
+		stopbutton.grid(row=4, column=2, sticky=W)
+		restartbutton.grid(row=4, column=3, sticky=W)
+		statusbutton.grid(row=4, column=4, sticky=W)
+
+		editbutton['command'] = application.switchtogroupsedit
+
+		self.loadgroups()
+
+		self.groups.bind('<ButtonRelease-1>', self.selectgroup)
 
 	def attach(self) :
 		self.frame.grid(row=1, column=0, columnspan=4)
 
 	def detach(self) :
 		self.frame.grid_forget()
+
+	def loadgroups(self) :
+		for group in self.application.config['groups'] :
+			self.groups.insert(END, group)
+
+	def clearnodes(self) :
+		while self.nodes.get(0) :
+			self.nodes.delete(0)
+
+	def loadnodes(self, group) :
+		if group in self.application.config['services'] :
+			service = group
+			for node in self.application.config['services'][service]['nodes'] :
+				self.nodes.insert(END, node + '-' + service)
+		else :
+			for service in self.application.config['groups'][group] :
+				self.loadnodes(service)
+
+	def selectgroup(self, event) :
+		group = self.groups.get(self.groups.curselection()[0])
+		self.clearnodes()
+		self.loadnodes(group)

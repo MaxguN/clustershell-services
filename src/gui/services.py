@@ -1,5 +1,4 @@
 from Tkinter import *
-import sys
 
 class ServicesFrame :
 	def __init__(self, goshujinsama, application) :
@@ -7,14 +6,14 @@ class ServicesFrame :
 		self.frame = frame = Frame(goshujinsama)
 
 		self.services = serviceslist = Listbox(frame, height=10, width=15)
-		self.nodes = nodeslist = Listbox(frame)
+		self.nodes = nodeslist = Listbox(frame, selectmode=EXTENDED)
 
 		nodelabel = Label(frame, text="Nodes :")
 		editbutton = Button(frame, text="Edit")
 		startbutton = Button(frame, text="Start")
 		stopbutton = Button(frame, text="Stop")
 		restartbutton = Button(frame, text="Restart")
-		statusbutton = Button(frame, text="Statut")
+		statusbutton = Button(frame, text="Status")
 
 		serviceslist.grid(row=0, column=0, rowspan=4, sticky=N+S)
 		nodelabel.grid(row=0, column=1, sticky=W)
@@ -41,12 +40,15 @@ class ServicesFrame :
 		for service in self.application.config['services'] :
 			self.services.insert(END, service)
 
-	def loadnodes(self, service) :
+	def clearnodes(self) :
 		while self.nodes.get(0) :
 			self.nodes.delete(0)
+
+	def loadnodes(self, service) :
 		for node in self.application.config['services'][service]['nodes'] :
 			self.nodes.insert(END, node)
 
 	def selectservice(self, event) :
 		service = self.services.get(self.services.curselection()[0])
+		self.clearnodes()
 		self.loadnodes(service)
