@@ -16,6 +16,10 @@ class SelectorFrame :
 
 		closebutton['command'] = selector.destroy
 
+		selectbutton['state'] = DISABLED
+
+		selection.bind('<ButtonRelease-1>', self.selectelement)
+
 	def load(self, selection, callback) :
 		for element in selection :
 			self.selection.insert(END, element)
@@ -24,3 +28,6 @@ class SelectorFrame :
 	def selectaction(self, callback) :
 		callback(self.selection.get(self.selection.curselection()[0]))
 		self.selector.destroy()
+
+	def selectelement(self, event) :
+		self.select['state'] = NORMAL

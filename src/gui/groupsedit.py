@@ -97,10 +97,20 @@ class GroupseditFrame :
 		self.application.openselector(selection, self.addservice)
 
 	def addgroup(self) :
-		self.edited()
+		self.clear()
+		self.groups.insert(END, 'new_group')
+		self.name.insert(0, 'new_group')
+		self.groups.selection_set(END)
+		self.serviceadd['state'] = NORMAL
 
 	def delgroup(self) :
-		self.edited()
+		group = self.groups.get(self.groups.curselection()[0])
+		config = self.application.config
+		self.groups.delete(self.groups.curselection()[0])
+		if group in config['groups'] :
+			del config['groups'][group]
+		self.application.save()
+		self.application.reloadgroups()
 
 	def addservice(self, service) :
 		self.services.insert(END, service)
@@ -113,7 +123,8 @@ class GroupseditFrame :
 	def save(self) :
 		group = self.groups.get(self.groups.curselection()[0])
 		config = self.application.config
-		del config['groups'][group]
+		if group in config['groups'] :
+			del config['groups'][group]
 		group = self.name.get()
 		config['groups'][group] = list(self.services.get(0, END))
 		self.application.save()
