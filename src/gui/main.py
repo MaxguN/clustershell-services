@@ -7,6 +7,7 @@ from managers import *
 from nodes import *
 from services import *
 from servicesedit import *
+from selector import *
 
 import sys
 sys.path.append('../service')
@@ -116,6 +117,9 @@ class Application :
         self.frames['managers'].reloadmanagers()
         self.frames['nodes'].reloadmanagers()
 
+    def openselector(self, selection, callback) :
+        selector = SelectorFrame(self.window)
+        selector.load(selection, callback)
 
 app = Application()
 app.start()
