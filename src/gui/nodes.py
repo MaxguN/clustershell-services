@@ -89,6 +89,7 @@ class NodesFrame :
 		if node in config['nodes'] :
 			del config['nodes'][node]
 		self.nodes.delete(self.nodes.curselection()[0])
+		self.clear()
 		self.application.save()
 		self.application.reloadnodes()
 
