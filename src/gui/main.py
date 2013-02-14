@@ -109,6 +109,9 @@ class Application :
         self.frames['groups'].reloadgroups()
         self.frames['groupsedit'].reloadgroups()
 
+    def reloadnodes(self) :
+        self.frames['nodes'].reloadnodes()
+
     def reloadservices(self) :
         self.frames['services'].reloadservices()
         self.frames['servicesedit'].reloadservices()
