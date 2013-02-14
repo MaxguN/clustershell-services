@@ -36,9 +36,16 @@ class ServicesFrame :
 	def detach(self) :
 		self.frame.grid_forget()
 
+	def clearservices(self) :
+		self.services.delete(0, END)
+
 	def loadservices(self) :
 		for service in self.application.config['services'] :
 			self.services.insert(END, service)
+
+	def reloadservices(self) :
+		self.clearservices()
+		self.loadservices()
 
 	def clearnodes(self) :
 		while self.nodes.get(0) :
