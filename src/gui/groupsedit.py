@@ -97,6 +97,7 @@ class GroupseditFrame :
 		self.application.openselector(selection, self.addservice)
 
 	def addgroup(self) :
+		self.groups.selection_clear(0, END)
 		self.clear()
 		self.groups.insert(END, 'new_group')
 		self.name.insert(0, 'new_group')
