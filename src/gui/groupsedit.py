@@ -4,15 +4,15 @@ class GroupseditFrame :
 	def __init__(self, goshujinsama, application) :
 		self.application = application
 		self.frame = frame = Frame(goshujinsama)
-		self.groups = grouplist = Listbox(frame, height=10, width=15)
+		self.groups = grouplist = Listbox(frame, exportselection=0, height=10, width=15)
 		self.name = nameinput = Entry(frame)
-		self.services = serviceslist = Listbox(frame)
+		self.services = serviceslist = Listbox(frame, exportselection=0)
 		namelabel = Label(frame, text="Name :")
 		serviceslabel = Label(frame, text="Services :")
 		groupadd = Button(frame, text="+")
 		servicesadd = Button(frame, text="+")
-		groupdel = Button(frame, text="-")
-		servicesdel = Button(frame, text="-")
+		self.groupdel = groupdel = Button(frame, text="-")
+		self.servicedel = servicesdel = Button(frame, text="-")
 		backbutton = Button(frame, text="Back")
 		self.savebutton = savebutton = Button(frame, text="Save")
 
@@ -43,6 +43,7 @@ class GroupseditFrame :
 
 		self.groups.bind('<ButtonRelease-1>', self.selectgroup)
 		self.name.bind('<KeyRelease>', self.edited)
+		self.services.bind('<ButtonRelease-1>', self.selectservice)
 
 	def attach(self) :
 		self.frame.grid(row=1, column=0, columnspan=4)
@@ -50,15 +51,22 @@ class GroupseditFrame :
 	def detach(self) :
 		self.frame.grid_forget()
 
+	def cleargroups(self) :
+		self.groups.delete(0, END)
+
 	def loadgroups(self) :
 		for group in self.application.config['groups'] :
 			self.groups.insert(END, group)
 
+	def reloadgroups(self) :
+		# if self.groups.curselection() :
+			
+		self.cleargroups()
+		self.loadgroups()
+
 	def clear(self) :
-		while self.name.get() :
-			self.name.delete(0)
-		while self.services.get(0) :
-			self.services.delete(0)
+		self.name.delete(0, END)
+		self.services.delete(0, END)
 
 	def load(self, group) :
 		self.name.insert(0, group)
@@ -69,6 +77,10 @@ class GroupseditFrame :
 		group = self.groups.get(self.groups.curselection()[0])
 		self.clear()
 		self.load(group)
+		self.groupdel['state'] = NORMAL
+
+	def selectservice(self, event) :
+		self.servicedel['state'] = NORMAL
 
 	def addgroup(self) :
 		self.edited()
@@ -80,10 +92,18 @@ class GroupseditFrame :
 		self.edited()
 
 	def delservice(self) :
+		self.services.delete(self.services.curselection()[0])
 		self.edited()
 
 	def save(self) :
+		group = self.groups.get(self.groups.curselection()[0])
+		config = self.application.config
+		del config['groups'][group]
+		group = self.name.get()
+		config['groups'][group] = list(self.services.get(0, END))
+		self.application.save()
 		self.savebutton['state'] = DISABLED
+		self.application.reloadgroups()
 
 	def back(self) :
 		self.clear()

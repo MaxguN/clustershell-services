@@ -36,13 +36,19 @@ class GroupsFrame :
 	def detach(self) :
 		self.frame.grid_forget()
 
+	def cleargroups(self) :
+		self.groups.delete(0, END)
+
 	def loadgroups(self) :
 		for group in self.application.config['groups'] :
 			self.groups.insert(END, group)
 
+	def reloadgroups(self) :
+		self.cleargroups()
+		self.loadgroups()
+
 	def clearnodes(self) :
-		while self.nodes.get(0) :
-			self.nodes.delete(0)
+		self.nodes.delete(0, END)
 
 	def loadnodes(self, group) :
 		if group in self.application.config['services'] :

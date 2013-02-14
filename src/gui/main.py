@@ -101,6 +101,21 @@ class Application :
         self.switchtoservices()
         self.window.mainloop()
 
+    def save(self) :
+        config.save()
+
+    def reloadgroups(self) :
+        self.frames['groups'].reloadgroups()
+        self.frames['groupsedit'].reloadgroups()
+
+    def reloadservices(self) :
+        self.frames['services'].reloadservices()
+        self.frames['servicesedit'].reloadservices()
+
+    def reloadmanagers(self) :
+        self.frames['managers'].reloadmanagers()
+        self.frames['nodes'].reloadmanagers()
+
 
 app = Application()
 app.start()
