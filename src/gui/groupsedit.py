@@ -50,6 +50,8 @@ class GroupseditFrame :
 		self.frame.grid(row=1, column=0, columnspan=4)
 
 	def detach(self) :
+		self.clear()
+		self.groups.selection_clear(0, END)
 		self.frame.grid_forget()
 
 	def cleargroups(self) :
@@ -133,7 +135,6 @@ class GroupseditFrame :
 		self.application.reloadgroups()
 
 	def back(self) :
-		self.clear()
 		self.application.switchtogroups()
 
 	def edited(self, event=None) :

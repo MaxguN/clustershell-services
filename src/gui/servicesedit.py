@@ -86,6 +86,8 @@ class ServiceseditFrame :
 		self.frame.grid(row=1, column=0, columnspan=4)
 
 	def detach(self) :
+		self.clear()
+		self.services.selection_clear(0, END)
 		self.frame.grid_forget()
 
 	def clearservices(self) :
@@ -197,8 +199,6 @@ class ServiceseditFrame :
 		self.application.reloadservices()
 
 	def back(self) :
-		self.clear()
-		self.services.selection_clear(0, END)
 		self.application.switchtoservices()
 
 	def edited(self, event=None) :
