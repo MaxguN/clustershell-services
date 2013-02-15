@@ -8,6 +8,7 @@ from nodes import *
 from services import *
 from servicesedit import *
 from selector import *
+from service import Service
 
 import sys
 sys.path.append('../service')
@@ -21,6 +22,7 @@ class Application :
         self.config = config.config
         self.buttons = {}
         self.frames = {}
+        self.service = Service(config)
         self.main()
 
     def main(self) :
@@ -123,6 +125,10 @@ class Application :
     def openselector(self, selection, callback) :
         selector = SelectorFrame(self.window)
         selector.load(selection, callback)
+
+    def do(self, action, service, callback) :
+        self.service.set(action, service, callback)
+        self.service.start()
 
 app = Application()
 app.start()
