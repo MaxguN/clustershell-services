@@ -44,6 +44,8 @@ class NodesFrame :
 		self.frame.grid(row=1, column=0, columnspan=4)
 
 	def detach(self) :
+		self.clear
+		self.nodes.selection_clear(0,END)
 		self.frame.grid_forget()
 
 	def clearnodes(self) :
@@ -88,6 +90,9 @@ class NodesFrame :
 		config = self.application.config
 		if node in config['nodes'] :
 			del config['nodes'][node]
+		for service in config['services'] :
+			if node in config['services'][service]['nodes'] :
+				del config['services'][service]['nodes'][config['services'][service]['nodes'].index(node)]
 		self.nodes.delete(self.nodes.curselection()[0])
 		self.clear()
 		self.application.save()
