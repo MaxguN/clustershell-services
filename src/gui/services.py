@@ -69,6 +69,7 @@ class ServicesFrame :
 		self.clearnodes()
 		for output, nodeset in task.iter_buffers() :
 			self.nodes['text'] += str(NodeSet.fromlist(nodeset)) + ' ' + str(output) + '\n'
+		service = self.services.get(self.services.curselection()[0])
 		self.enableactions(self.application.config['services'][service]['actions'])
 
 	def selectservice(self, event) :

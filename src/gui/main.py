@@ -22,7 +22,7 @@ class Application :
         self.config = config.config
         self.buttons = {}
         self.frames = {}
-        self.service = Service(config)
+        self.service = None
         self.main()
 
     def main(self) :
@@ -127,6 +127,7 @@ class Application :
         selector.load(selection, callback)
 
     def do(self, action, service, callback) :
+        self.service = Service(config)
         self.service.set(action, service, callback)
         self.service.start()
 

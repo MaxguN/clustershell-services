@@ -28,10 +28,12 @@ task = task_self()
 
 for service, manager, daemon, node in nodes:
 	if config.checkAction(service, action) :
-		task.run(manager + daemon + ' ' + action, nodes=node)
+		task.shell(manager + daemon + ' ' + action, nodes=node)
 
-		for output, nodeset in task.iter_buffers():
-			print NodeSet.fromlist(nodeset), output
 	else :
 		print 'Action "' + action + '" is not supported by ' + service
 		print 'Actions supported : ' + config.listActions(service)
+task.run()
+
+for output, nodeset in task.iter_buffers():
+	print NodeSet.fromlist(nodeset), output
