@@ -7,7 +7,6 @@ class ServicesFrame :
 		self.frame = frame = Frame(goshujinsama)
 
 		self.services = serviceslist = Listbox(frame, exportselection=0, height=10, width=15)
-		# self.nodes = nodeslist = Listbox(frame, exportselection=0, selectmode=EXTENDED)
 		self.nodes = nodeslist = Message(frame, width=500)
 
 		nodelabel = Label(frame, text="Nodes :")
@@ -29,8 +28,11 @@ class ServicesFrame :
 		buttons['status'].grid(row=4, column=4, sticky=W)
 
 		editbutton['command'] = application.switchtoservicesedit
-		for button in buttons :
-			buttons[button]['command'] = lambda : self.application.do(button, serviceslist.get(serviceslist.curselection()[0]), self.display)
+
+		buttons['start']['command'] = lambda : self.application.do('start', serviceslist.get(serviceslist.curselection()[0]), self.display)
+		buttons['stop']['command'] = lambda : self.application.do('stop', serviceslist.get(serviceslist.curselection()[0]), self.display)
+		buttons['restart']['command'] = lambda : self.application.do('restart', serviceslist.get(serviceslist.curselection()[0]), self.display)
+		buttons['status']['command'] = lambda : self.application.do('status', serviceslist.get(serviceslist.curselection()[0]), self.display)
 
 		self.loadservices()
 		self.enableactions()

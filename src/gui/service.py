@@ -16,7 +16,7 @@ class Service(Thread):
 
 	def run(self) :
 		task = task_self()
-		for service, manager, daemon, node in self.nodes:
+		for service, daemon, manager, node in self.nodes:
 			task.shell(manager + daemon + ' ' + self.action, nodes=node)
 		task.run()
 		self.callback(task)

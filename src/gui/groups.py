@@ -28,8 +28,11 @@ class GroupsFrame :
 		buttons['status'].grid(row=4, column=4, sticky=W)
 
 		editbutton['command'] = application.switchtogroupsedit
-		for button in buttons :
-			buttons[button]['command'] = lambda : self.application.do(button, groupslist.get(groupslist.curselection()[0]), self.display)
+
+		buttons['start']['command'] = lambda : self.application.do('start', groupslist.get(groupslist.curselection()[0]), self.display)
+		buttons['stop']['command'] = lambda : self.application.do('stop', groupslist.get(groupslist.curselection()[0]), self.display)
+		buttons['restart']['command'] = lambda : self.application.do('restart', groupslist.get(groupslist.curselection()[0]), self.display)
+		buttons['status']['command'] = lambda : self.application.do('status', groupslist.get(groupslist.curselection()[0]), self.display)
 
 		self.loadgroups()
 

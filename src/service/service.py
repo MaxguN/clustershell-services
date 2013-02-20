@@ -26,7 +26,7 @@ else :
 
 task = task_self()
 
-for service, manager, daemon, node in nodes:
+for service, daemon, manager, node in nodes:
 	if config.checkAction(service, action) :
 		task.shell(manager + daemon + ' ' + action, nodes=node)
 
