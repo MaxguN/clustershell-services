@@ -11,7 +11,7 @@ class Service(Thread):
 
 	def set(self, action, service, callback) :
 		self.action = action
-		self.nodes = self.config.fetchNodes(service)
+		self.nodes = self.config.fetchNodes(service, action)
 		self.callback = callback
 
 	def run(self) :

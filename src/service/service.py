@@ -14,14 +14,14 @@ elif len(sys.argv) == 3 :
 	config.load()
 
 	action = sys.argv[2]
-	nodes = config.fetchNodes(sys.argv[1])
+	nodes = config.fetchNodes(sys.argv[1], action)
 	
 	if len(nodes) == 0 :
 		print 'Service ' + sys.argv[1] + ' not found'
 		exit(2)
 
 else :
-	print 'Usage : ' + sys.argv[0] + ' <service> <action> <node_list>'
+	print 'Usage : ' + sys.argv[0] + ' <service> <action> <nodeset>'
 	exit(1)
 
 task = task_self()

@@ -5,23 +5,28 @@ config = {
 	"services" : {}
 }
 
-def fetchNodes(service) :
+def fetchNodes(service, action, blacklist=[]) :
 	global config
 
 	nodes = []
 
-	if config['services'].has_key(service) :
-		for dependency in config['services'][service]['dependencies'] :
-			nodes.extend(fetchNodes(dependency))
+	if service in config['services'] :
+		if not action in ['status'] :
+			for dependency in config['services'][service]['dependencies'] :
+				if not dependency in blacklist :
+					blacklist.append(dependency)
+					nodes.extend(fetchNodes(dependency, action, blacklist))
 		for node in map(unicode.encode, config['services'][service]['nodes']) :
 			daemon = config['services'][service]['daemon']
 			manager = config['managers'][config['nodes'][node]['manager']]
 			if service in config['nodes'][node] :
 				daemon = config['nodes'][node][service]
 			nodes.append((service, daemon, manager, node))
-	elif config['groups'].has_key(service) :
+	elif service in config['groups'] :
 		for subservice in config['groups'][service]:
-			nodes.extend(fetchNodes(subservice))
+			if not subservice in blacklist :
+				blacklist.append(subservice)
+				nodes.extend(fetchNodes(subservice, action, blacklist))
 
 	return nodes
 
@@ -29,7 +34,7 @@ def fetchNodes(service) :
 def checkAction(service, action) :
 	global config
 
-	if config['services'].has_key(service) :
+	if service in config['services'] :
 		return (action in config['services'][service]['actions'])
 
 	return True
@@ -40,7 +45,7 @@ def listActions(service) :
 
 	actions = ''
 
-	if config['services'].has_key(service) :
+	if service in config['services'] :
 		actions = '{' + '|'.join(config['services'][service]['actions']) + '}'
 
 	return actions
