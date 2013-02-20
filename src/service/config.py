@@ -1,5 +1,5 @@
 import json
-from ClusterShell.Task import NodeSet
+from ClusterShell.NodeSet import *
 
 config = {
 	"services" : {}
@@ -16,12 +16,11 @@ def fetchNodes(service, action, blacklist=[]) :
 				if not dependency in blacklist :
 					blacklist.append(dependency)
 					nodes.extend(fetchNodes(dependency, action, blacklist))
-		for node in map(unicode.encode, config['services'][service]['nodes']) :
+		for nodeset in map(str, config['services'][service]['nodes']) :
 			daemon = config['services'][service]['daemon']
-			manager = config['managers'][config['nodes'][node]['manager']]
-			if service in config['nodes'][node] :
-				daemon = config['nodes'][node][service]
-			nodes.append((service, daemon, manager, node))
+			for node in expand(nodeset) :
+				manager = config['managers'][config['nodes'][node]['manager']]
+				nodes.append((service, daemon, manager, node))
 	elif service in config['groups'] :
 		for subservice in config['groups'][service]:
 			if not subservice in blacklist :
@@ -63,6 +62,6 @@ def save(filename = 'cs-services.json') :
 	global config
 	configfd = open(filename, 'w')
 
-	json.dump(config, configfd)
+	json.dump(config, configfd, indent=1)
 
 	configfd.close()

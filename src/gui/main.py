@@ -122,8 +122,8 @@ class Application :
         self.frames['managers'].reloadmanagers()
         self.frames['nodes'].reloadmanagers()
 
-    def openselector(self, selection, callback) :
-        selector = SelectorFrame(self.window)
+    def openselector(self, selection, callback, selectmode=BROWSE) :
+        selector = SelectorFrame(self.window, selectmode)
         selector.load(selection, callback)
 
     def do(self, action, service, callback) :

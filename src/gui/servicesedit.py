@@ -1,4 +1,5 @@
 from Tkinter import *
+from ClusterShell.Task import NodeSet
 
 class ServiceseditFrame :
 	def __init__(self, goshujinsama, application) :
@@ -138,7 +139,7 @@ class ServiceseditFrame :
 		self.dependencydel['state'] = NORMAL
 
 	def selectnode(self, event) :
-		self.dependencydel['state'] = NORMAL
+		self.nodedel['state'] = NORMAL
 
 	def dependencyselector(self) :
 		selection = self.application.config['services'].keys()
@@ -146,7 +147,7 @@ class ServiceseditFrame :
 
 	def nodeselector(self) :
 		selection = self.application.config['nodes'].keys()
-		self.application.openselector(selection, self.addnode)
+		self.application.openselector(selection, self.addnode, EXTENDED)
 
 	def addservice(self) :
 		self.services.selection_clear(0, END)
@@ -174,8 +175,8 @@ class ServiceseditFrame :
 		self.dependencies.delete(self.dependencies.curselection()[0])
 		self.edited()
 
-	def addnode(self, node) :
-		self.nodes.insert(END, node)
+	def addnode(self, nodelist) :
+		self.nodes.insert(END, unicode(NodeSet.fromlist(map(str, nodelist))))
 		self.edited()
 
 	def delnode(self) :

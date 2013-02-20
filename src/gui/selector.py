@@ -1,12 +1,12 @@
 from Tkinter import *
 
 class SelectorFrame :
-	def __init__(self, goshujinsama) :
+	def __init__(self, goshujinsama, selectmode=BROWSE) :
 		self.selector = selector = Toplevel()
 
 		selector.transient(goshujinsama)
 
-		self.selection = selection = Listbox(selector)
+		self.selection = selection = Listbox(selector, selectmode=selectmode)
 		closebutton = Button(selector, text="Close")
 		self.select = selectbutton = Button(selector, text="Select")
 
@@ -26,7 +26,15 @@ class SelectorFrame :
 		self.select['command'] = lambda : self.selectaction(callback)
 
 	def selectaction(self, callback) :
-		callback(self.selection.get(self.selection.curselection()[0]))
+		selected = ''
+		if self.selection['selectmode'] in (MULTIPLE, EXTENDED) :
+			selected = []
+			selection = self.selection.curselection()
+			for item in selection :
+				selected.append(self.selection.get(item))
+		else :
+			selected = self.selection.get(self.selection.curselection()[0])
+		callback(selected)
 		self.selector.destroy()
 
 	def selectelement(self, event) :
